@@ -25,8 +25,12 @@ public class UIDropDownMenu : MonoBehaviour
                     _dropdown.options.Add(new TMP_Dropdown.OptionData(nameOfFunc));
             }
         }
-        _dropdown.SetValueWithoutNotify(uiHandler.GetCurrentIdFunction());
+        UpdateValue();
+    }
 
+    public void UpdateValue()
+    {
+        _dropdown.SetValueWithoutNotify(uiHandler.GetCurrentIdFunction());
     }
 
     public void OnButtonPressed(int value)

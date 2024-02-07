@@ -13,7 +13,7 @@ namespace Packs.Scene1.UI
         [SerializeField] private UIHandler uiHandler;
         public event Action<int> OnSettingInputField;
 
-        private void Start()
+        public void UpdateValue()
         {
             inputField.SetTextWithoutNotify(uiHandler.GetCurrentTransitionDuration()
                 .ToString(CultureInfo.InvariantCulture));

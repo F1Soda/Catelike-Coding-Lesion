@@ -11,8 +11,8 @@ public class UISliderResolution : MonoBehaviour
     [SerializeField] private TMP_Text textResolution;
 
     public event Action<int> OnSettingSlider;
-
-    private void Start()
+    
+    public void UpdateValue()
     {
         _slider.SetValueWithoutNotify(uiHandler.GetCurrentResolution());
         textResolution.text = uiHandler.GetCurrentResolution().ToString();

@@ -13,8 +13,8 @@ public class UISliderTime : MonoBehaviour
     [SerializeField] private TMP_Text textTime;
 
     public event Action<ETimeOfDay> OnSettingSlider;
-
-    private void Start()
+    
+    public void UpdateValue()
     {
         _slider.SetValueWithoutNotify(uiHandler.GetCurrentTimeOfDay());
         textTime.text = ((ETimeOfDay)uiHandler.GetCurrentTimeOfDay()).ToString();

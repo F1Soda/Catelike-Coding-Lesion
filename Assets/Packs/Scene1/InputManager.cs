@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Packs.Scene1
 {
@@ -17,6 +18,11 @@ namespace Packs.Scene1
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                GameManager.instance.LoadNextScene();
             }
         }
         

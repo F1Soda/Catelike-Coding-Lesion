@@ -4,28 +4,28 @@ using UnityEngine;
 using System.IO;
 using GeneralScripts;
 using Packs.Scene1;
+using TMPro;
 
 public class Serializator : MonoBehaviour
 {
     [Header("References")] [SerializeField]
     private SerializeData  data = new SerializeData();
 
-    [SerializeField] private Graph graph;
-    [SerializeField] private TimeManager timeManager;
+    [SerializeField] public Graph graph;
+    [SerializeField] public TimeManager timeManager;
+    [SerializeField] private TMP_InputField transitionDurationInputField;
+    [SerializeField] private FrameRateCounter frameRateCounter;
 
     private readonly string _path = Application.dataPath + "/savedata.json";
+
+    public SerializeData Data => data;
 
     private void Start()
     {
         DeserializeData();
     }
-
-    private void OnApplicationQuit()
-    {
-        SerializeData();
-    }
-
-    private void DeserializeData()
+    
+    public void DeserializeData()
     {
         var tempJson = File.ReadAllText(_path);
         try
@@ -33,23 +33,27 @@ public class Serializator : MonoBehaviour
             data = JsonConvert.DeserializeObject<SerializeData>(tempJson);
             graph.resolution = data.resolution;
             timeManager.SetTime(data.timeOfDay);
-            graph.typeFunction = data.typeOfFunction;
+            graph.SetFunction(data.typeOfFunction);
+            frameRateCounter.SetType(data.displayMode);
+            graph.transitionDuration = data.transitionDuration;
         }
         catch (Exception e)
         {
             Debug.LogError($"Failed to load data due to: {e.Message} {e.StackTrace}");
         }
-
-
         print(tempJson);
     }
 
-    private void SerializeData()
+    public void SerializeData()
     {
         data.resolution = graph.resolution;
         data.timeOfDay = timeManager.currentTime;
         data.typeOfFunction = graph.typeFunction;
+        data.displayMode = frameRateCounter.displayMode;
+        data.transitionDuration = graph.transitionDuration;
+        data.typeRendering = graph is CPUGraph ? ETypeRendering.CPU : ETypeRendering.GPU;
         var json = JsonConvert.SerializeObject(data);
+        print(json);
         try
         {
             File.WriteAllText(_path, json);

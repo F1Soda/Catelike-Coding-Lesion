@@ -6,14 +6,20 @@ public class FrameRateCounter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI display;
     [SerializeField, Range(0.1f, 2f)] private float sampleDuration = 1f;
-
+    
     public enum DisplayMode
     {
         FPS,
         MS
     }
 
-    [SerializeField] private DisplayMode displayMode = DisplayMode.FPS;
+    public DisplayMode displayMode
+    {
+        get => _displayMode;
+        private set => _displayMode = value;
+    }
+
+    [SerializeField] private DisplayMode _displayMode = DisplayMode.FPS;
 
     private int frames;
     private float duration, worstDuration, bestDuration = float.MaxValue;
@@ -32,7 +38,7 @@ public class FrameRateCounter : MonoBehaviour
 
         if (duration >= sampleDuration)
         {
-            if (displayMode == DisplayMode.FPS)
+            if (_displayMode == DisplayMode.FPS)
             {
                 display.SetText("FPS\n{0:0}\n{1:0}\n{2:0}", 1f / bestDuration, frames / duration, 1f / worstDuration);
             }
@@ -48,15 +54,9 @@ public class FrameRateCounter : MonoBehaviour
             worstDuration = 0f;
         }
     }
-
-    public void SetFPS()
-    {
-        displayMode = DisplayMode.FPS;
-    }
     
-    public void SetMS()
+    public void SetType(DisplayMode mode)
     {
-        displayMode = DisplayMode.MS;
+        displayMode = mode;
     }
-    
 }
